@@ -3,34 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
   
   <title>Frontend Mentor | Todo app</title>
-
+   <link rel="stylesheet" href="./assets/styles.css">
   <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
   <style>
     .attribution { font-size: 11px; text-align: center; }
     .attribution a { color: hsl(228, 45%, 44%); }
   </style>
 </head>
-<body>
+<body class="dark">
+<main class="main-container">
+  <section class="search-container">
+    <header>
+      <h1>Todo</h1>
+      <a href="http://"><img src="./images/icon-moon.svg" alt="" srcset=""></a>
+    </header>
+    <div class="input-container">
+    <input type="text" name="search" id="search-input" placeholder="Create a new todo..." class="dark input">
+    <span class="circle-checkbox dark circle-input"></span>
+    </div>
+  </section>
+  <section class="todos-container dark">
+    <div class="todos">
+      <div class="todo-item dark">
+        <div class="todo-info dark">
+          <span class="circle-checkbox dark"></span>
+        <p class="todo-title dark completed">Jog around the park 3x</p>          
+        </div>
+        <button><img src="./images/icon-cross.svg" alt="delete-icon" srcset="" class="hide delete-btn"></button>
+      </div>
+      <div class="todo-item dark">
+        <div class="todo-info dark">
+          <span class="circle-checkbox dark"></span>
+        <p class="todo-title">Jog around the park 3x</p>          
+        </div>
+        <button><img src="./images/icon-cross.svg" alt="delete-icon" srcset="" class="hide delete-btn"></button>
+      </div>
 
-  Todo
-
-  <!-- Add dynamic number --> items left
-
-  All
-  Active 
-  Completed
-
-  Clear Completed
-
-  Drag and drop to reorder list
-
+    <div class="todo-container_footer dark">
+      <p><span class="item-number">5</span> items left</p>
+      <button class="delete-all_btn">Clear completed</button>
+    </div>
+    </div>
+  </section>
+  <section class="info-container">
+    <div class="to-do_status dark">    
+      <a href="#" class="active">All</a>
+    <a href="#">Active</a>
+    <a href="#">Completed</a>
+  </div>
+  <p class="info dark">Drag and drop to reoder list</p>
+  </section>
+</main>
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
+    Coded by <a href="https://www.linkedin.com/in/jenn-acosta7/">Jenn Acosta</a>.
   </div>
 </body>
 </html>
