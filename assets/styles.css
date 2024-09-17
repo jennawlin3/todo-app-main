@@ -214,13 +214,12 @@ border: 1px solid transparent;
 }
 
 .todo-item.light {
-    border-bottom: 1px solid var(--light-grayish-blue1);
-    color: var(--very-dark-grayish-blue1);    
+    border-bottom: 1px solid var(--very-dark-grayish-blue1);
 }
 
 .todo-item.dark {
     border-bottom: 1px solid var(--very-dark-grayish-blue1);
-    color: var(--light-grayish-blue2);  
+    color: var(--dark-grayish-blue2);
 }
 
 .hide {
@@ -229,6 +228,7 @@ border: 1px solid transparent;
 
 .todo-info .todo-title {
     margin-left: 20px;
+    color: var(--dark-grayish-blue2);
 }
 
 .todo-title.light.completed {
