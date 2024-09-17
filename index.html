@@ -16,53 +16,56 @@
     .attribution a { color: hsl(228, 45%, 44%); }
   </style>
 </head>
-<body class="dark">
+<body class="light">
 <main class="main-container">
   <section class="search-container">
     <header>
       <h1>Todo</h1>
-      <a href="http://"><img src="./images/icon-moon.svg" alt="" srcset=""></a>
+      <button class="icon-theme_container">
+        <img src="./images/icon-moon.svg" alt="Icon for theme change" srcset="" class="moon">
+        <img src="./images/icon-sun.svg" alt="Icon for theme change" srcset="" class="sun hide"></button>
     </header>
     <div class="input-container">
-    <input type="text" name="search" id="search-input" placeholder="Create a new todo..." class="dark input">
-    <span class="circle-checkbox dark circle-input"></span>
+    <input type="text" name="search" id="search-input" placeholder="Create a new todo..." class="light input">
+    <span class="light circle-input"></span>
     </div>
   </section>
-  <section class="todos-container dark">
+  <section class="todos-container light">
     <div class="todos">
-      <div class="todo-item dark">
-        <div class="todo-info dark">
-          <span class="circle-checkbox dark"></span>
-        <p class="todo-title dark completed">Jog around the park 3x</p>          
+<!--      <div class="todo-item light">
+        <div class="todo-info light">
+          <span class="circle-checkbox light"><img class="check-icon hide" src="./images/icon-check.svg"></span>
+        <p class="todo-title light">Jog around the park 3x</p>          
         </div>
         <button><img src="./images/icon-cross.svg" alt="delete-icon" srcset="" class="hide delete-btn"></button>
       </div>
-      <div class="todo-item dark">
-        <div class="todo-info dark">
-          <span class="circle-checkbox dark"></span>
-        <p class="todo-title">Jog around the park 3x</p>          
+      <div class="todo-item light">
+        <div class="todo-info light">
+          <span class="circle-checkbox light"><img class="check-icon hide" src="./images/icon-check.svg"></span>
+        <p class="todo-title light">Jog around the park 3x</p>          
         </div>
         <button><img src="./images/icon-cross.svg" alt="delete-icon" srcset="" class="hide delete-btn"></button>
       </div>
-
-    <div class="todo-container_footer dark">
-      <p><span class="item-number">5</span> items left</p>
+    -->
+    <div class="todo-container_footer light">
+      <p><span class="item-number">0</span> items left</p>
       <button class="delete-all_btn">Clear completed</button>
     </div>
     </div>
   </section>
   <section class="info-container">
-    <div class="to-do_status dark">    
-      <a href="#" class="active">All</a>
-    <a href="#">Active</a>
-    <a href="#">Completed</a>
+    <div class="to-do_status light">    
+      <a href="#" class="active options">All</a>
+    <a href="#" class="options">Active</a>
+    <a href="#" class="options">Completed</a>
   </div>
-  <p class="info dark">Drag and drop to reoder list</p>
+  <p class="info light">Drag and drop to reoder list</p>
   </section>
 </main>
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
     Coded by <a href="https://www.linkedin.com/in/jenn-acosta7/">Jenn Acosta</a>.
   </div>
+  <script src="./app/app.js"></script>
 </body>
 </html>
