@@ -124,7 +124,7 @@ body.dark {
     color: var(--white);
 }
 
-.circle-checkbox, .circle-input {
+.circle-checkbox, .circle-input, button.completed {
     display: flex;
     width: 25px;
     height: 25px;
@@ -136,14 +136,14 @@ body.dark {
     position: relative;
 }
 
-.circle-checkbox.completed {
+button.completed {
     background: linear-gradient(90deg, var(--blue-background), var(--pink-background));    
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.circle-checkbox.completed::before {
+button.completed::before {
     content: "";
     width: 12px;
     height: 12px;
@@ -223,7 +223,7 @@ border: 1px solid transparent;
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
 .todo-info .todo-title {
@@ -231,14 +231,16 @@ border: 1px solid transparent;
     color: var(--dark-grayish-blue2);
 }
 
+.todo-title.completed {
+    text-decoration: line-through;
+}
+
 .todo-title.light.completed {
     color: var(--light-grayish-blue1);
-    text-decoration: line-through;
 }
 
 .todo-title.dark.completed {
     color: var(--dark-grayish-blue2);
-    text-decoration: line-through;
 }
 
 
