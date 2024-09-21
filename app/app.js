@@ -245,12 +245,11 @@ function addFunctionalityToDo() {
 
     todoItem.forEach(item => {
         // DESKTOP
-        item.addEventListener("dragstart", function (e) {
-            itemDragStart = e.target.getAttribute("data-order");
-            console.log(itemDragStart);
+        item.addEventListener("dragstart", e => {
+            dragStart(e);
         });
-        item.addEventListener("dragover", function(e) {
-            e.preventDefault();  
+        item.addEventListener("dragover", e => {
+            drag(e);
         });
 
         item.addEventListener("drop", (e) => {
@@ -259,20 +258,19 @@ function addFunctionalityToDo() {
             }
         });
 
-        //MOBILE
-        item.addEventListener("touchstart", function (e) {
-            itemDragStart = e.target.getAttribute("data-order");
-            console.log(itemDragStart);
+        // MOBILE
+        item.addEventListener("touchstart", e => {
+            dragStart(e);
         });
-        /*item.addEventListener("touchmove", function(e) {
-            e.preventDefault();  
-        });*/
+        item.addEventListener("touchmove", e => {
+            drag(e);
+        });
 
         item.addEventListener("touchend", (e) => {
             if(e) {
                 updateList(e.target);
             }
-        })
+        });
 
         item.addEventListener("mouseover", e => {
             if(e) {
@@ -319,6 +317,16 @@ function updateList(element) {
     })
 }
 
+// DRAG AND DROP
+function dragStart(e) {
+    itemDragStart = e.target.getAttribute("data-order");
+}
+
+function drag(e) {
+        e.preventDefault();
+}
+
+// Drag and drop changes
 function orderList() {
     let todoItem = document.querySelectorAll(".todo-item");
     let order = itemDragEnd-1;
