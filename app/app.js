@@ -43,7 +43,7 @@ iconThemeBtn.addEventListener("click", e => {
     if(body.classList.contains("dark")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
-        localStorage.setItem("theme", "light");
+        //localStorage.setItem("theme", "light");
         //console.log(localStorage);
 
     for(let i = 0; i < themeItems.length; i++) {
@@ -83,6 +83,7 @@ function AddToDo(inputValue) {
     const circleCheckbox = document.createElement("button");
     circleCheckbox.classList.add("circle-checkbox");
     circleCheckbox.classList.add("active");
+    circleCheckbox.classList.add("light");
     circleCheckbox.setAttribute("data-id", count);
     const completedCheckbox = document.createElement("button");
     completedCheckbox.classList.add("completed");
