@@ -667,6 +667,7 @@ async function getTodos() {
                 themeItems.forEach(item => {
                 //console.log(item);
                 item.classList.add("light");
+                item.classList.remove("dark");
                 moonIcon.classList.remove("hide");
                 sunIcon.classList.add("hide");             
                 }) 
@@ -675,6 +676,7 @@ async function getTodos() {
             if(theme === "dark"){
                 themeItems.forEach(item => {
                 item.classList.add("dark");
+                item.classList.remove("light");
                 sunIcon.classList.remove("hide");
                 moonIcon.classList.add("hide");               
                 }) 
