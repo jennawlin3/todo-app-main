@@ -603,6 +603,7 @@ async function getTodos() {
         circleCheckbox.classList.add("circle-checkbox");
         circleCheckbox.setAttribute("data-id", valuesToDo.id);
         circleCheckbox.classList.add("active");
+        circleCheckbox.classList.add("theme");
         const completedCheckbox = document.createElement("button");
         completedCheckbox.classList.add("completed");
         completedCheckbox.setAttribute("data-id", valuesToDo.id);
