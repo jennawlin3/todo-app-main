@@ -658,31 +658,37 @@ async function getTodos() {
         } 
         else {
             theme = entry[1];
-            //console.log(theme);
+            console.log(theme);
             
             const body = document.querySelector("body");
-            body.classList.add(`${theme}`)
-
-            if(theme === "light"){
-                themeItems.forEach(item => {
-                //console.log(item);
-                item.classList.add("light");
-                item.classList.remove("dark");
-                moonIcon.classList.remove("hide");
-                sunIcon.classList.add("hide");             
-                }) 
-            }
-        
-            if(theme === "dark"){
-                themeItems.forEach(item => {
-                item.classList.add("dark");
-                item.classList.remove("light");
-                sunIcon.classList.remove("hide");
-                moonIcon.classList.add("hide");               
-                }) 
-            }
+            body.classList.add(`${theme}`);
+            addTheme();
         }
     });
+}
+
+// Theme 
+function addTheme() {
+    const themeItems = document.querySelectorAll(".theme");
+
+    if(theme === "light"){
+        themeItems.forEach((item, i) => {
+        console.log(item)
+        themeItems[i].classList.add("light");
+        themeItems[i].classList.remove("dark");
+        moonIcon.classList.remove("hide");
+        sunIcon.classList.add("hide");             
+        }) 
+    }
+
+    if(theme === "dark"){
+        themeItems.forEach((item, i) => {
+        themeItems[i].classList.add("dark");
+        themeItems[i].classList.remove("light");
+        sunIcon.classList.remove("hide");
+        moonIcon.classList.add("hide");               
+        }) 
+    }
 }
 
 // Clean To Dos container
