@@ -32,7 +32,7 @@ iconThemeBtn.addEventListener("click", e => {
     if(body.classList.contains("light")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
-        localStorage.setItem("theme", "dark");
+        //localStorage.setItem("theme", "dark");
         //console.log(localStorage);
         for(let i = 0; i < themeItems.length; i++) {
             themeItems[i].classList.toggle("light");
@@ -315,7 +315,7 @@ function deleteItem(idItem) {
             });
 
      entries.forEach((entry, i) => {
-        if(entry[0] !== "theme") {
+        //if(entry[0] !== "theme") {
         valuesToDo = JSON.parse(entry[1]);
         //console.log(typeof entry[0]);
         
@@ -324,7 +324,7 @@ function deleteItem(idItem) {
             activeArray = activeArray.filter(item => item !== entry[0]);
             
             localStorage.removeItem(entry[0]);      
-        }
+        //}
         itemNumber.textContent = activeArray.length; 
     }
     });
@@ -375,7 +375,7 @@ function updatedStatus(idTodo) {
     let valuesToDo;
 
     entries.forEach((entry, i) => {
-        if(entry[0] !== "theme") {
+        //if(entry[0] !== "theme") {
         let index = i+1;
         valuesToDo = JSON.parse(entry[1]);
         //console.log(typeof valuesToDo.id);
@@ -392,7 +392,7 @@ function updatedStatus(idTodo) {
             localStorage.setItem(`${valuesToDo.id}`, JSON.stringify(objectJSON));
             
             return;
-           }
+           //}
            }
         })
         //console.log(localStorage);
@@ -456,7 +456,7 @@ function activeStatus(idCheckbox) {
         let valuesToDo;
     
         entries.forEach((entry, i) => {
-            if(entry[0] !== "theme") {
+            //if(entry[0] !== "theme") {
             let index = i+1;
             valuesToDo = JSON.parse(entry[1]);
             //onsole.log(valuesToDo.id === idCheckbox);
@@ -475,7 +475,7 @@ function activeStatus(idCheckbox) {
                 //console.log(objectJSON);
                 return;
                }
-            }
+            //}
             })
             //console.log(localStorage);    
             numberTodos.textContent = activeArray.length; 
@@ -575,7 +575,7 @@ async function getTodos() {
     let activeToDos = [];
 
         await entries.forEach((entry, i) => {
-        if(entry[0] !== "theme") {
+        //if(entry[0] !== "theme") {
         //console.log(entry);
         //console.log(entry[0]);
 
@@ -654,7 +654,8 @@ async function getTodos() {
         
         //console.log(localStorage);
         addFunctionalityToDo();
-        } else {
+        //} 
+        /*else {
             theme = entry[1];
             //console.log(theme);
             
@@ -678,7 +679,7 @@ async function getTodos() {
                 moonIcon.classList.add("hide");               
                 }) 
             }
-        }
+        }*/
     });
 }
 
@@ -703,7 +704,6 @@ deleteAllBtn.addEventListener("click", e => {
         }
 
      entries.forEach((entry, i) => {
-        if(entry[0] !== "theme") {
         valuesToDo = JSON.parse(entry[1]);
         //console.log(typeof entry[0]);
         
@@ -712,13 +712,12 @@ deleteAllBtn.addEventListener("click", e => {
             completedArray = completedArray.filter(item => item !== entry[0]);            
             localStorage.removeItem(entry[0]);
             //console.log(completedArray);
-        }
-    }
-    });
+    };
 
 
         itemNumber.textContent = activeArray.length;
         //console.log(localStorage);
+})
 })
 
 document.addEventListener("DOMContentLoaded", getTodos());
