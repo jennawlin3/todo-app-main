@@ -32,7 +32,7 @@ iconThemeBtn.addEventListener("click", e => {
     if(body.classList.contains("light")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
-        //localStorage.setItem("theme", "dark");
+        localStorage.setItem("theme", "dark");
         //console.log(localStorage);
         for(let i = 0; i < themeItems.length; i++) {
             themeItems[i].classList.toggle("light");
@@ -43,7 +43,7 @@ iconThemeBtn.addEventListener("click", e => {
     if(body.classList.contains("dark")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
-        //localStorage.setItem("theme", "light");
+        localStorage.setItem("theme", "light");
         //console.log(localStorage);
 
     for(let i = 0; i < themeItems.length; i++) {
