@@ -244,6 +244,7 @@ function addFunctionalityToDo() {
     });
 
     todoItem.forEach(item => {
+        // DESKTOP
         item.addEventListener("dragstart", function (e) {
             itemDragStart = e.target.getAttribute("data-order");
             console.log(itemDragStart);
@@ -257,6 +258,21 @@ function addFunctionalityToDo() {
                 updateList(e.target);
             }
         });
+
+        //MOBILE
+        item.addEventListener("touchstart", function (e) {
+            itemDragStart = e.target.getAttribute("data-order");
+            console.log(itemDragStart);
+        });
+        /*item.addEventListener("touchmove", function(e) {
+            e.preventDefault();  
+        });*/
+
+        item.addEventListener("touchend", (e) => {
+            if(e) {
+                updateList(e.target);
+            }
+        })
 
         item.addEventListener("mouseover", e => {
             if(e) {
@@ -387,8 +403,8 @@ function deleteItem(idItem) {
      entries.forEach((entry, i) => {
         //if(entry[0] !== "theme") {
         valuesToDo = JSON.parse(entry[1]);
+
         //console.log(typeof entry[0]);
-        
         if(entry[0] === idItem) {            
             completedArray = completedArray.filter(item => item !== entry[0]);
             activeArray = activeArray.filter(item => item !== entry[0]);
