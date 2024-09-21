@@ -73,7 +73,6 @@ function AddToDo(inputValue) {
     }
     
     const todoItem = document.createElement("div");
-    todoItem.classList.add("theme");
     todoItem.setAttribute("id", `todo-${count}`);
     todoItem.setAttribute("data-id", count);
     // ToDo Info
