@@ -206,6 +206,11 @@ border: 1px solid transparent;
     background-color: var(--very-dark-desaturated-blue);
 }
 
+.todos {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 .todo-item, .todo-info, .todo-container_footer, .to-do_status, .info-container {
     display: flex;
     align-items: center;
@@ -214,7 +219,7 @@ border: 1px solid transparent;
 .todo-item {
     justify-content: space-between;
     padding: 20px;
-    cursor: pointer;
+    cursor: grab;
 }
 
 .todo-item.light {
@@ -261,6 +266,7 @@ border: 1px solid transparent;
 .todo-container_footer {
     padding: 20px;
     justify-content: space-between;
+    order: -100000;
 }
 
 .todo-container_footer p {

@@ -21,6 +21,8 @@ let activeArray = [];
 let activeFilter = false;
 let completedFilter = false;
 let draggable;
+let itemDragStart;
+let itemDragEnd;
 
 let theme;
 
@@ -73,8 +75,11 @@ function AddToDo(inputValue) {
     }
     
     const todoItem = document.createElement("div");
-    todoItem.setAttribute("id", `todo-${count}`);
     todoItem.setAttribute("data-id", count);
+    todoItem.setAttribute("data-order", count);
+    todoItem.style.order = count;
+    todoItem.setAttribute("draggable", true);
+    
     // ToDo Info
     todoItem.classList.add("todo-item");
     const todoInfo = document.createElement("div");
@@ -92,7 +97,8 @@ function AddToDo(inputValue) {
     todoTitle.classList.add("todo-title");
     todoTitle.textContent = inputValue;
     todoTitle.setAttribute("data-id", count);
-    
+    todoTitle.setAttribute("data-order", count);
+
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn_container");
     deleteBtn.classList.add("hide");
@@ -130,6 +136,7 @@ function AddToDo(inputValue) {
     inputTodo.value = "";
 
     //Element
+
     const title = document.querySelector(".todo-title");
 
      const activeBtn = document.querySelectorAll("button.active");
@@ -168,11 +175,13 @@ function todoJSON(title) {
     let titleTodo = title.textContent;
     let statusTodo = "active";
     let id = title.getAttribute("data-id");
+    let order = title.getAttribute("data-order");
 
     const objectJSON = {
         title: titleTodo,
         status: statusTodo,
         id: id,
+        order: order,
     }    
 
     toDos[count-1] = objectJSON;
@@ -235,8 +244,20 @@ function addFunctionalityToDo() {
     });
 
     todoItem.forEach(item => {
-        //item.addEventListener("dragstart", dragStart);
-        //item.addEventListener("dragend", dragEnd);
+        item.addEventListener("dragstart", function (e) {
+            itemDragStart = e.target.getAttribute("data-order");
+            console.log(itemDragStart);
+        });
+        item.addEventListener("dragover", function(e) {
+            e.preventDefault();  
+        });
+
+        item.addEventListener("drop", (e) => {
+            if(e) {
+                updateList(e.target);
+            }
+        });
+
         item.addEventListener("mouseover", e => {
             if(e) {
                 let idItem = e.currentTarget.getAttribute("data-id");
@@ -258,7 +279,7 @@ function addFunctionalityToDo() {
 
             let idItem = e.target.getAttribute("data-id");
 
-            deleteItem(idItem);
+            deleteItem();
         }
         )
     });
@@ -266,10 +287,59 @@ function addFunctionalityToDo() {
     numberTodos.textContent = activeArray.length;
 }
 
-// Drag and drop 
-/*function dragStart() {
-    draggableItem = true;
-}*/
+//Update list
+function updateList(element) { 
+    itemDragEnd = element.getAttribute("data-order");
+    let todoItem = document.querySelectorAll(".todo-item");
+    let orderCount = itemDragEnd-1;
+
+    console.log(element);
+
+    todoItem.forEach(item => {
+        if(item.getAttribute("data-order") === itemDragStart) {
+            element.before(item)
+        }
+        orderList()
+    })
+}
+
+function orderList() {
+    let todoItem = document.querySelectorAll(".todo-item");
+    let order = itemDragEnd-1;
+
+    let items = {...localStorage};
+    let entries = Object.entries(items);
+    let valuesToDo;
+
+    for(let i = 0; i < todoItem.length; i++) {
+        let idItem = todoItem[i].getAttribute("data-id");
+
+        if(todoItem[i] !== undefined) {
+        todoItem[i].style.order = order;
+
+        entries.forEach((entry, i) => {
+        if(entry[0] !== "theme") {
+        valuesToDo = JSON.parse(entry[1]);
+        
+        if(valuesToDo.id === idItem) {
+            const objectJSON = {
+                title: valuesToDo.title,
+                status: valuesToDo.status,
+                id: valuesToDo.id,
+                order: order,
+            }    
+        
+            toDos[count-1] = objectJSON;
+            //console.log(count);
+            localStorage.setItem(`${valuesToDo.id}`, JSON.stringify(objectJSON));
+                        }
+                    }
+                })
+        order--;
+            }
+        }
+        console.log(localStorage);
+};
 
 // Show delete icon
 function showDeleteIcon(idItem) {
@@ -387,6 +457,7 @@ function updatedStatus(idTodo) {
                 title: valuesToDo.title,
                 status: "completed",
                 id: String(index),
+                order: valuesToDo.order,
             }    
         
             localStorage.setItem(`${valuesToDo.id}`, JSON.stringify(objectJSON));
@@ -469,6 +540,7 @@ function activeStatus(idCheckbox) {
                     title: valuesToDo.title,
                     status: "active",
                     id:  String(index),
+                    order: valuesToDo.order,
                 }    
             
                 localStorage.setItem(`${index}`, JSON.stringify(objectJSON));
@@ -489,7 +561,7 @@ function activeStatus(idCheckbox) {
             }
 }
 
-// Filter To Dos
+// FILTERS
 
 // Active to do filter
 function filterActive() {
@@ -592,8 +664,10 @@ async function getTodos() {
 
         const todoItem = document.createElement("div");
         todoItem.classList.add("theme");
-        todoItem.setAttribute("id", `todo-${valuesToDo.id}`);
+        //todoItem.setAttribute("id", `todo-${valuesToDo.id}`);
         todoItem.setAttribute("data-id", valuesToDo.id);
+        todoItem.setAttribute("data-order", valuesToDo.order);
+        
         // ToDo Info
         todoItem.classList.add("todo-item");
         todoItem.setAttribute("draggable", true);
@@ -625,7 +699,8 @@ async function getTodos() {
         todoTitle.classList.add(valuesToDo.status);
         todoTitle.textContent = valuesToDo.title;
         todoTitle.setAttribute("data-id", valuesToDo.id);
-    
+        todoTitle.setAttribute("data-order", valuesToDo.order);
+
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("delete-btn_container");
         deleteBtn.classList.add("hide");
@@ -655,6 +730,7 @@ async function getTodos() {
         
         //console.log(localStorage);
         addFunctionalityToDo();
+        addOrder();
         } 
         else {
             theme = entry[1];
@@ -670,7 +746,6 @@ async function getTodos() {
 // Theme 
 function addTheme() {
     const themeItems = document.querySelectorAll(".theme");
-
     if(theme === "light"){
         themeItems.forEach((item, i) => {
         themeItems[i].classList.add("light");
@@ -686,8 +761,20 @@ function addTheme() {
         themeItems[i].classList.remove("light");
         sunIcon.classList.remove("hide");
         moonIcon.classList.add("hide");               
-        }) 
+        }); 
     }
+}
+
+// Add Order 
+function addOrder() {
+    const todoItem = document.querySelectorAll(".todo-item");
+    
+    todoItem.forEach((item, i) => {
+        let orderNum = item.getAttribute("data-order");
+        //console.log(orderNum);
+        
+        todoItem[i].style.order = orderNum;
+    })
 }
 
 // Clean To Dos container
