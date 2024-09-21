@@ -60,6 +60,8 @@ body.dark {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    outline: none;
+    border: none;
 }
 
 .search-container {
@@ -90,6 +92,8 @@ body.dark {
     display: flex;
     width: 30px;
     height: 30px;
+    border: none;
+    outline: none;
 }
 /*
 .moon {
