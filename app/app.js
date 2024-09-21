@@ -575,7 +575,7 @@ async function getTodos() {
     let activeToDos = [];
 
         await entries.forEach((entry, i) => {
-        //if(entry[0] !== "theme") {
+        if(entry[0] !== "theme") {
         //console.log(entry);
         //console.log(entry[0]);
 
@@ -655,14 +655,13 @@ async function getTodos() {
         
         //console.log(localStorage);
         addFunctionalityToDo();
-        //} 
-        /*else {
+        } 
+        else {
             theme = entry[1];
             //console.log(theme);
             
-            const themeItems = document.querySelectorAll(".theme");
-            const sunIcon = document.querySelector(".sun");
-            const moonIcon = document.querySelector(".moon");
+            const body = document.querySelector("body");
+            body.classList.add(`${theme}`)
 
             if(theme === "light"){
                 themeItems.forEach(item => {
@@ -680,7 +679,7 @@ async function getTodos() {
                 moonIcon.classList.add("hide");               
                 }) 
             }
-        }*/
+        }
     });
 }
 
