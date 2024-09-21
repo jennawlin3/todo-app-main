@@ -2,8 +2,6 @@
 const iconThemeBtn = document.querySelector(".icon-theme_container");
 const moonIcon = document.querySelector(".moon");
 const sunIcon = document.querySelector(".sun");
-const darkItems = document.querySelectorAll(".dark");
-const lightItems = document.querySelectorAll(".light");
 
 const toDos = {};
 
@@ -20,27 +18,37 @@ let inputValue;
 let count = 1;
 let completedArray = [];
 let activeArray = [];
+let activeFilter = false;
+let completedFilter = false;
+let draggable;
+
+let theme;
 
 // Change theme
-iconThemeBtn.addEventListener("click", e => {
-    console.log("click");
-    if(lightItems) {
+iconThemeBtn.addEventListener("click", e => {   
+    const themeItems = document.querySelectorAll(".theme");
+    const body = document.querySelector("body");
+    //console.log("click");
+    if(body.classList.contains("light")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
-
-        for(let i = 0; i < lightItems.length; i++) {
-            lightItems[i].classList.toggle("light");
-            lightItems[i].classList.toggle("dark");
+        localStorage.setItem("theme", "dark");
+        //console.log(localStorage);
+        for(let i = 0; i < themeItems.length; i++) {
+            themeItems[i].classList.toggle("light");
+            themeItems[i].classList.toggle("dark");
         }
         return
     } 
-    if(darkItems) {
+    if(body.classList.contains("dark")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
+        localStorage.setItem("theme", "light");
+        //console.log(localStorage);
 
-    for(let i = 0; i < darkItems.length; i++) {
-        darkItems[i].classList.toggle("light");
-        darkItems[i].classList.toggle("dark");
+    for(let i = 0; i < themeItems.length; i++) {
+        themeItems[i].classList.toggle("light");
+        themeItems[i].classList.toggle("dark");
     }    
     }
 });
@@ -65,6 +73,7 @@ function AddToDo(inputValue) {
     }
     
     const todoItem = document.createElement("div");
+    todoItem.classList.add("theme");
     todoItem.setAttribute("id", `todo-${count}`);
     todoItem.setAttribute("data-id", count);
     // ToDo Info
@@ -86,8 +95,9 @@ function AddToDo(inputValue) {
     
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn_container");
+    deleteBtn.classList.add("hide");
+    deleteBtn.setAttribute("data-id", count);
     const crossIcon = document.createElement("img");
-    crossIcon.classList.add("hide");
     crossIcon.classList.add("delete-btn");
     crossIcon.setAttribute("src", "./images/icon-cross.svg");
     
@@ -138,9 +148,38 @@ function AddToDo(inputValue) {
             //console.log(completedArray);
         }
     });
+ 
+    if(activeFilter === true) {
+        filterActive();
+    }
 
+    if(completedFilter === true) {
+        filterCompleted();
+    }
+
+    //console.log(localStorage);
     addFunctionalityToDo();
     todoJSON(title);
+}
+//Create JSON for local Storage
+function todoJSON(title) {
+    //console.log(title);
+
+    let titleTodo = title.textContent;
+    let statusTodo = "active";
+    let id = title.getAttribute("data-id");
+
+    const objectJSON = {
+        title: titleTodo,
+        status: statusTodo,
+        id: id,
+    }    
+
+    toDos[count-1] = objectJSON;
+    //console.log(count);
+    localStorage.setItem(`${count-1}`, JSON.stringify(objectJSON));
+
+    //console.log(localStorage);
 }
 
 // Buttons functionalities
@@ -151,6 +190,8 @@ function addFunctionalityToDo() {
     const activeBtn = document.querySelector(".active-btn");
     const allBtn = document.querySelector(".all-btn");
     const completedBtn = document.querySelector(".completed-btn");
+    const todoItem = document.querySelectorAll(".todo-item");
+    const deleteBtn = document.querySelectorAll(".delete-btn_container");
 
     completedCheckbox.forEach(checkbox =>  {
         checkbox.addEventListener("click", e => {
@@ -169,7 +210,7 @@ function addFunctionalityToDo() {
  
                     e.preventDefault();                let idTodo = e.target.getAttribute("data-id");
 
-                    console.log(idTodo);
+                    //console.log(idTodo);
 
                     updatedStatus(idTodo);
                     return;
@@ -180,7 +221,7 @@ function addFunctionalityToDo() {
         e.preventDefault();
         if(e) {
             filterActive();
-            console.log("click");
+            //console.log("click");
         }
     });
 
@@ -193,84 +234,101 @@ function addFunctionalityToDo() {
         }
     });
 
+    todoItem.forEach(item => {
+        //item.addEventListener("dragstart", dragStart);
+        //item.addEventListener("dragend", dragEnd);
+        item.addEventListener("mouseover", e => {
+            if(e) {
+                let idItem = e.currentTarget.getAttribute("data-id");
 
+                showDeleteIcon(idItem);
+            }   
+        });
+
+        item.addEventListener("mouseout", e => {
+            let idItem = e.currentTarget.getAttribute("data-id");
+
+            hideDeleteIcon(idItem);
+        })
+    });
+
+    deleteBtn.forEach(btn => {
+        btn.querySelector("click", e => {
+            //console.log(e.target);
+
+            let idItem = e.target.getAttribute("data-id");
+
+            deleteItem(idItem);
+        }
+        )
+    });
 
     numberTodos.textContent = activeArray.length;
 }
 
-// Filter To Dos
+// Drag and drop 
+/*function dragStart() {
+    draggableItem = true;
+}*/
 
-// Active to do filter
-function filterActive() {
-    activeFilter = true;
-    completedFilter = false;
+// Show delete icon
+function showDeleteIcon(idItem) {
+    const deleteBtn = document.querySelectorAll(".delete-btn_container");
 
-    const todoItems = document.querySelectorAll(".todo-item");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const activeBtn = document.querySelector(".active-btn");
-    
-    todoItems.forEach(item => {
-        completedArray.forEach(element => {
-            if(item.getAttribute("data-id") === element) {
-                item.classList.add("hide");
-            } else {
-                item.classList.remove("hide");
+    deleteBtn.forEach(btn => {
+        if(btn.getAttribute("data-id") === idItem) {
+        btn.classList.remove("hide");
+
+        btn.addEventListener("click", e => {
+            if(e) {
+                deleteItem(idItem);
             }
-        });
-
-        allBtn.classList.remove("active");
-        completedBtn.classList.remove("active");
-        activeBtn.classList.add("active");
+        })
+        }        
     })
-    return;
-};
-function filterCompleted() {
-    activeFilter = false;
-    completedFilter = true;
 
-    const todoItems = document.querySelectorAll(".todo-item");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const activeBtn = document.querySelector(".active-btn");
-    
-    todoItems.forEach(item => {
-        completedArray.forEach(element => {
-            if(item.getAttribute("data-id") === element) {
-                item.classList.remove("hide");
-            } else {
-                item.classList.add("hide");
-            }
-        });
+}
+// Hide delete icon
+function hideDeleteIcon(idItem) {
+    const deleteBtn = document.querySelectorAll(".delete-btn_container");
 
-        activeBtn.classList.remove("active");
-        allBtn.classList.remove("active");
-        completedBtn.classList.add("active");
+    deleteBtn.forEach(btn => {
+        if(btn.getAttribute("data-id") === idItem) {
+        btn.classList.add("hide");
+        //console.log(btn);
+        }        
     })
-    return;
-};
 
-function showAll() {
-    activeFilter = false;
-    completedFilter = false;
+}
 
-    const todoItems = document.querySelectorAll(".todo-item");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const activeBtn = document.querySelector(".active-btn");
-    
-    for(let i = 0; i < todoItems.length; i++) {
-     todoItems[i].classList.remove("hide");   
+function deleteItem(idItem) {
+    let items = {...localStorage};
+    let entries = Object.entries(items);
+    let valuesToDo;
+    const todoItem = document.querySelectorAll(".todo-item");
+
+    //console.log(activeArray);
+        todoItem.forEach(item => {
+                if(item.getAttribute("data-id") === idItem) {
+                todos.removeChild(item);                  
+                }
+            });
+
+     entries.forEach((entry, i) => {
+        if(entry[0] !== "theme") {
+        valuesToDo = JSON.parse(entry[1]);
+        //console.log(typeof entry[0]);
+        
+        if(entry[0] === idItem) {            
+            completedArray = completedArray.filter(item => item !== entry[0]);
+            activeArray = activeArray.filter(item => item !== entry[0]);
+            
+            localStorage.removeItem(entry[0]);      
+        }
+        itemNumber.textContent = activeArray.length; 
     }
-    todoItems.forEach((item,i) => {
-    
-        });
-
-        allBtn.classList.add("active");
-        completedBtn.classList.remove("active");
-        activeBtn.classList.remove("active");
-        return;
-};
+    });
+}
 
 // Completed Status of To Do
 function updatedStatus(idTodo) {
@@ -289,7 +347,7 @@ function updatedStatus(idTodo) {
     todoItem.forEach((item, index) => {
         if(item.getAttribute("data-id") === idTodo) {
             idCont = Number(index);
-            console.log(idCont);
+            //console.log(idCont);
         } else {
             return;
         }
@@ -317,6 +375,7 @@ function updatedStatus(idTodo) {
     let valuesToDo;
 
     entries.forEach((entry, i) => {
+        if(entry[0] !== "theme") {
         let index = i+1;
         valuesToDo = JSON.parse(entry[1]);
         //console.log(typeof valuesToDo.id);
@@ -330,14 +389,23 @@ function updatedStatus(idTodo) {
                 id: String(index),
             }    
         
-            localStorage.setItem(`${index}`, JSON.stringify(objectJSON));
+            localStorage.setItem(`${valuesToDo.id}`, JSON.stringify(objectJSON));
             
             return;
+           }
            }
         })
         //console.log(localStorage);
         numberTodos.textContent = activeArray.length;
-        //console.log(activeArray);
+        
+        if(activeFilter === true) {
+            filterActive();
+        }
+
+        if(completedFilter === true) {
+            filterCompleted();
+        }
+        //console.log(localStorage);
 } 
 
 // Active Status of To Do
@@ -388,6 +456,7 @@ function activeStatus(idCheckbox) {
         let valuesToDo;
     
         entries.forEach((entry, i) => {
+            if(entry[0] !== "theme") {
             let index = i+1;
             valuesToDo = JSON.parse(entry[1]);
             //onsole.log(valuesToDo.id === idCheckbox);
@@ -406,29 +475,96 @@ function activeStatus(idCheckbox) {
                 //console.log(objectJSON);
                 return;
                }
+            }
             })
             //console.log(localStorage);    
             numberTodos.textContent = activeArray.length; 
+
+            if(activeFilter === true) {
+                filterActive();
+            }
+    
+            if(completedFilter === true) {
+                filterCompleted();
+            }
 }
 
-//Create JSON for local Storage
-function todoJSON(title) {
-    //console.log(title);
+// Filter To Dos
 
-    let titleTodo = title.textContent;
-    let statusTodo = "active";
-    let id = title.getAttribute("data-id");
+// Active to do filter
+function filterActive() {
+    activeFilter = true;
+    completedFilter = false;
 
-    const objectJSON = {
-        title: titleTodo,
-        status: statusTodo,
-        id: id,
-    }    
+    const todoItems = document.querySelectorAll(".todo-item");
+    const allBtn = document.querySelector(".all-btn");
+    const completedBtn = document.querySelector(".completed-btn");
+    const activeBtn = document.querySelector(".active-btn");
+    
+    todoItems.forEach(item => {
+        //console.log(completedArray);
+        let idCont = item.getAttribute("data-id");
 
-    toDos[count-1] = objectJSON;
+        if (completedArray.includes(idCont)) {
+            item.classList.add("hide");
+        } else {
+            item.classList.remove("hide");
+        }
+        });
 
-    localStorage.setItem(`${count-1}`, JSON.stringify(objectJSON));
+        allBtn.classList.remove("active");
+        completedBtn.classList.remove("active");
+        activeBtn.classList.add("active");
+    return;
 }
+
+function filterCompleted() {
+    activeFilter = false;
+    completedFilter = true;
+
+    const todoItems = document.querySelectorAll(".todo-item");
+    const allBtn = document.querySelector(".all-btn");
+    const completedBtn = document.querySelector(".completed-btn");
+    const activeBtn = document.querySelector(".active-btn");
+    
+    todoItems.forEach(item => {
+        //console.log(completedArray);
+        let idCont = item.getAttribute("data-id");
+
+        if (completedArray.includes(idCont)) {
+            item.classList.remove("hide");
+        } else {
+            item.classList.add("hide");
+        }
+        });
+
+        activeBtn.classList.remove("active");
+        allBtn.classList.remove("active");
+        completedBtn.classList.add("active");
+    return;
+};
+
+function showAll() {
+    activeFilter = false;
+    completedFilter = false;
+
+    const todoItems = document.querySelectorAll(".todo-item");
+    const allBtn = document.querySelector(".all-btn");
+    const completedBtn = document.querySelector(".completed-btn");
+    const activeBtn = document.querySelector(".active-btn");
+    
+    for(let i = 0; i < todoItems.length; i++) {
+     todoItems[i].classList.remove("hide");   
+    }
+    todoItems.forEach((item,i) => {
+    
+        });
+
+        allBtn.classList.add("active");
+        completedBtn.classList.remove("active");
+        activeBtn.classList.remove("active");
+        return;
+};
 
 // Render all To Dos saved on localStorage
 async function getTodos() {
@@ -439,6 +575,10 @@ async function getTodos() {
     let activeToDos = [];
 
         await entries.forEach((entry, i) => {
+        if(entry[0] !== "theme") {
+        //console.log(entry);
+        //console.log(entry[0]);
+
         valuesToDo = JSON.parse(entry[1]);
         //console.log(valuesToDo);
         count = Number(valuesToDo.id)+1;
@@ -451,10 +591,12 @@ async function getTodos() {
             }
 
         const todoItem = document.createElement("div");
+        todoItem.classList.add("theme");
         todoItem.setAttribute("id", `todo-${valuesToDo.id}`);
         todoItem.setAttribute("data-id", valuesToDo.id);
         // ToDo Info
         todoItem.classList.add("todo-item");
+        todoItem.setAttribute("draggable", true);
         const todoInfo = document.createElement("div");
         todoInfo.classList.add("todo-info");
         const circleCheckbox = document.createElement("button");
@@ -474,8 +616,8 @@ async function getTodos() {
         activeArray.push(String(valuesToDo.id));
         }
 
-        console.log(activeArray);
-        console.log(completedArray);
+        //console.log(activeArray);
+        //console.log(completedArray);
 
         const todoTitle = document.createElement("p");
         todoTitle.classList.add("todo-title");
@@ -485,25 +627,16 @@ async function getTodos() {
     
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("delete-btn_container");
+        deleteBtn.classList.add("hide");
+        deleteBtn.setAttribute("data-id", valuesToDo.id);
         const crossIcon = document.createElement("img");
-        crossIcon.classList.add("hide");
         crossIcon.classList.add("delete-btn");
         crossIcon.setAttribute("src", "./images/icon-cross.svg");
-        
-        if(inputTodo.classList.contains("light")) {
-            todoItem.classList.add("light");
-            todoInfo.classList.add("light");
-            circleCheckbox.classList.add("light");
-            todoTitle.classList.add("light");
-        }
-    
-        if(inputTodo.classList.contains("dark")) {
-            todoItem.classList.add("dark");
-            todoInfo.classList.add("dark");
-            circleCheckbox.classList.add("dark");
-            todoTitle.classList.add("dark");
-        }
-    
+        todoItem.classList.add("light");
+        todoInfo.classList.add("light");
+        circleCheckbox.classList.add("light");
+        todoTitle.classList.add("light");
+
         //circleCheckbox.appendChild(checkIcon);
         todoInfo.appendChild(completedCheckbox);
         todoInfo.appendChild(circleCheckbox);
@@ -517,10 +650,35 @@ async function getTodos() {
         todos.prepend(todoItem);
 
         //console.log(activeArray);
-
         //console.log(completedArray);
-        //console.log(activeArray);
+        
+        //console.log(localStorage);
         addFunctionalityToDo();
+        } else {
+            theme = entry[1];
+            //console.log(theme);
+            
+            const themeItems = document.querySelectorAll(".theme");
+            const sunIcon = document.querySelector(".sun");
+            const moonIcon = document.querySelector(".moon");
+
+            if(theme === "light"){
+                themeItems.forEach(item => {
+                //console.log(item);
+                item.classList.add("light");
+                moonIcon.classList.remove("hide");
+                sunIcon.classList.add("hide");             
+                }) 
+            }
+        
+            if(theme === "dark"){
+                themeItems.forEach(item => {
+                item.classList.add("dark");
+                sunIcon.classList.remove("hide");
+                moonIcon.classList.add("hide");               
+                }) 
+            }
+        }
     });
 }
 
@@ -531,24 +689,7 @@ deleteAllBtn.addEventListener("click", e => {
     let valuesToDo;
     const todoItem = document.querySelectorAll(".todo-item");
 
-    console.log(completedArray);
     //console.log(activeArray);
-
-     entries.forEach((entry, i) => {
-        valuesToDo = JSON.parse(entry[1]);
-        
-        console.log(valuesToDo);
-        console.log(completedArray);
-        completedArray.forEach(element => {
-            if(valuesToDo.id === String(element) || valuesToDo.id === Number(element)) {
-            let index = element;
-            console.log(index);
-            localStorage.removeItem(element);
-            console.log(localStorage);           
-            }
-        });   
-    });
-
     if(e) {
         todoItem.forEach(item => {
     
@@ -561,20 +702,23 @@ deleteAllBtn.addEventListener("click", e => {
         });
         }
 
+     entries.forEach((entry, i) => {
+        if(entry[0] !== "theme") {
+        valuesToDo = JSON.parse(entry[1]);
+        //console.log(typeof entry[0]);
+        
+        if (valuesToDo.status === "completed") {
+            //console.log(entry[0]);
+            completedArray = completedArray.filter(item => item !== entry[0]);            
+            localStorage.removeItem(entry[0]);
+            //console.log(completedArray);
+        }
+    }
+    });
+
+
         itemNumber.textContent = activeArray.length;
-        console.log(localStorage);
+        //console.log(localStorage);
 })
 
 document.addEventListener("DOMContentLoaded", getTodos());
-/*
-<div class="todo-item light">
-<div class="todo-info light">
-  <span class="circle-checkbox light"></span>
-<p class="todo-title light completed">Jog around the park 3x</p>          
-</div>
-<button><img src="./images/icon-cross.svg" alt="delete-icon" srcset="" class="hide delete-btn"></button>
-</div>
-*/
-/*
-
-*/
