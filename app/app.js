@@ -257,7 +257,7 @@ function addFunctionalityToDo() {
                 updateList(e.target);
             }
         });
-
+        
         // MOBILE
         item.addEventListener("touchstart", e => {
             dragStart(e);
