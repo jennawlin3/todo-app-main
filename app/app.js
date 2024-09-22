@@ -266,7 +266,7 @@ function addFunctionalityToDo() {
             }
         });
         
-        // MOBILE
+        /*// MOBILE
         item.addEventListener("touchstart", e => {
             dragStart(e);
         });
@@ -278,7 +278,7 @@ function addFunctionalityToDo() {
             if(e) {
                 updateList(e.target);
             }
-        });
+        });*/
 
         item.addEventListener("mouseover", e => {
             if(e) {

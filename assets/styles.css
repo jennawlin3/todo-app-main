@@ -209,6 +209,7 @@ border: 1px solid transparent;
 
 .todos-container {
     width: 90%;
+    height: auto;
     margin: auto;
     border-radius: 5px;
     margin-top: -40px;
