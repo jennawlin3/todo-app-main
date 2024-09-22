@@ -65,14 +65,23 @@ body.dark {
 }
 
 .search-container {
-    background: url(../images/bg-mobile-light.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
     height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
+}
+
+.search-container.light {
+    background: url(../images/bg-mobile-light.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.search-container.dark {
+    background: url(../images/bg-mobile-dark.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .search-container header {
@@ -123,9 +132,17 @@ body.dark {
     margin: auto;
 }
 
+.input {
+    color: var(--very-dark-grayish-blue1);
+}
+
 .input-container .input.dark {
     background-color: var(--very-dark-desaturated-blue);
     color: var(--white);
+}
+
+.input.dark::placeholder {
+    color: var(--light-grayish-blue2);
 }
 
 .circle-checkbox, .circle-input, button.completed {
@@ -223,12 +240,12 @@ border: 1px solid transparent;
 }
 
 .todo-item.light {
-    border-bottom: 1px solid var(--very-dark-grayish-blue1);
+    border-bottom: 1px solid var(--very-light-grayish-blue1);
 }
 
 .todo-item.dark {
     border-bottom: 1px solid var(--very-dark-grayish-blue1);
-    color: var(--dark-grayish-blue2);
+    color: var(--light-grayish-blue2);
 }
 
 .hide {
@@ -237,7 +254,14 @@ border: 1px solid transparent;
 
 .todo-info .todo-title {
     margin-left: 20px;
-    color: var(--dark-grayish-blue2);
+}
+
+.todo-title.light {
+    color: var(--very-dark-grayish-blue1);
+}
+
+.todo-title.dark {
+    color: var(--light-grayish-blue2);
 }
 
 .todo-title.completed {
@@ -367,6 +391,18 @@ border: 1px solid transparent;
     .search-container, .todos-container, .info-container {
         position: relative;
         z-index: 100;
+    }
+
+    .search-container.light {
+        background: url(../images/bg-desktop-light.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    .search-container.dark {
+        background: url(../images/bg-desktop-dark.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
 

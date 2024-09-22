@@ -84,6 +84,7 @@ function AddToDo(inputValue) {
     todoItem.classList.add("todo-item");
     const todoInfo = document.createElement("div");
     todoInfo.classList.add("todo-info");
+    todoInfo.classList.add("theme");
     const circleCheckbox = document.createElement("button");
     circleCheckbox.classList.add("circle-checkbox");
     circleCheckbox.classList.add("active");
@@ -98,6 +99,7 @@ function AddToDo(inputValue) {
     todoTitle.textContent = inputValue;
     todoTitle.setAttribute("data-id", count);
     todoTitle.setAttribute("data-order", count);
+    todoTitle.classList.add("theme");
 
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("delete-btn_container");
@@ -697,6 +699,7 @@ async function getTodos() {
         todoItem.setAttribute("draggable", true);
         const todoInfo = document.createElement("div");
         todoInfo.classList.add("todo-info");
+        todoInfo.classList.add("theme");
         const circleCheckbox = document.createElement("button");
         circleCheckbox.classList.add("circle-checkbox");
         circleCheckbox.setAttribute("data-id", valuesToDo.id);
@@ -724,6 +727,7 @@ async function getTodos() {
         todoTitle.textContent = valuesToDo.title;
         todoTitle.setAttribute("data-id", valuesToDo.id);
         todoTitle.setAttribute("data-order", valuesToDo.order);
+        todoTitle.classList.add("theme");
 
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("delete-btn_container");
