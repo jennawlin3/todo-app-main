@@ -344,6 +344,7 @@ border: 1px solid transparent;
     text-align: center;
     margin-bottom: 40px;
     font-size: 0.8rem;
+    display: none;
 }
 
 .info.light {
@@ -379,6 +380,7 @@ border: 1px solid transparent;
 
     .info {
         margin-top: 50px;
+        display: block;
     }
 }
 
