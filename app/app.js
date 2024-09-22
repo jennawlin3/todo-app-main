@@ -62,6 +62,12 @@ inputTodo.addEventListener("input", e => {
     }
 })
 
+document.addEventListener("keypress", e => {
+    if(e.key === "Enter") {
+        AddToDo(inputValue);
+    }
+})
+
 circleInput.addEventListener("click", e => {
     if(e) {
         AddToDo(inputValue);
