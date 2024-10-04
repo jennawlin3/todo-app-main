@@ -1,18 +1,18 @@
-// Theme
-const iconThemeBtn = document.querySelector(".icon-theme_container");
-const moonIcon = document.querySelector(".moon");
-const sunIcon = document.querySelector(".sun");
+const d = document; 
 
-const toDos = {};
+// Theme
+const iconThemeBtn = d.querySelector(".icon-theme_container");
+const moonIcon = d.querySelector(".moon");
+const sunIcon = d.querySelector(".sun");
 
 // To do items
-const todos = document.querySelector(".todos");
-const deleteAllBtn = document.querySelector(".delete-all_btn");
-const optionsTodo = document.querySelectorAll(".options");
-const inputTodo = document.querySelector(".input");
-const circleInput = document.querySelector(".circle-input");
-const todoFooter = document.querySelector(".todo-container_footer");
-const itemNumber = document.querySelector(".item-number");
+const todos = d.querySelector(".todos");
+const deleteAllBtn = d.querySelector(".delete-all_btn");
+const optionsTodo = d.querySelectorAll(".options");
+const inputTodo = d.querySelector(".input");
+const circleInput = d.querySelector(".circle-input");
+const todoFooter = d.querySelector(".todo-container_footer");
+const itemNumber = d.querySelector(".item-number");
 
 let inputValue;
 let count = 1;
@@ -21,16 +21,14 @@ let activeArray = [];
 let activeFilter = false;
 let completedFilter = false;
 let draggable;
-let itemDragStart;
-let itemDragEnd;
 
 let theme;
 
 // Change theme
 iconThemeBtn.addEventListener("click", e => {   
-    const themeItems = document.querySelectorAll(".theme");
-    const body = document.querySelector("body");
-    //console.log("click");
+    const themeItems = d.querySelectorAll(".theme");
+    const body = d.querySelector("body");
+
     if(body.classList.contains("light")) {
         moonIcon.classList.toggle("hide");
         sunIcon.classList.toggle("hide");
@@ -62,7 +60,7 @@ inputTodo.addEventListener("input", e => {
     }
 })
 
-document.addEventListener("keypress", e => {
+d.addEventListener("keypress", e => {
     if(e.key === "Enter") {
         AddToDo(inputValue);
     }
@@ -80,7 +78,7 @@ function AddToDo(inputValue) {
         return;
     }
     
-    const todoItem = document.createElement("div");
+    const todoItem = d.createElement("div");
     todoItem.setAttribute("data-id", count);
     todoItem.setAttribute("data-order", count);
     todoItem.style.order = count;
@@ -88,30 +86,30 @@ function AddToDo(inputValue) {
     
     // ToDo Info
     todoItem.classList.add("todo-item");
-    const todoInfo = document.createElement("div");
+    const todoInfo = d.createElement("div");
     todoInfo.classList.add("todo-info");
     todoInfo.classList.add("theme");
-    const circleCheckbox = document.createElement("button");
+    const circleCheckbox = d.createElement("button");
     circleCheckbox.classList.add("circle-checkbox");
     circleCheckbox.classList.add("active");
     circleCheckbox.classList.add("light");
     circleCheckbox.setAttribute("data-id", count);
-    const completedCheckbox = document.createElement("button");
+    const completedCheckbox = d.createElement("button");
     completedCheckbox.classList.add("completed");
     completedCheckbox.classList.add("hide");
     completedCheckbox.setAttribute("data-id", count);
-    const todoTitle = document.createElement("p");
+    const todoTitle = d.createElement("p");
     todoTitle.classList.add("todo-title");
     todoTitle.textContent = inputValue;
     todoTitle.setAttribute("data-id", count);
     todoTitle.setAttribute("data-order", count);
     todoTitle.classList.add("theme");
 
-    const deleteBtn = document.createElement("button");
+    const deleteBtn = d.createElement("button");
     deleteBtn.classList.add("delete-btn_container");
     deleteBtn.classList.add("hide");
     deleteBtn.setAttribute("data-id", count);
-    const crossIcon = document.createElement("img");
+    const crossIcon = d.createElement("img");
     crossIcon.classList.add("delete-btn");
     crossIcon.setAttribute("src", "./images/icon-cross.svg");
     
@@ -143,12 +141,12 @@ function AddToDo(inputValue) {
     count++;
     inputTodo.value = "";
 
-    //Element
+    //Check active elements
 
-    const title = document.querySelector(".todo-title");
+    const title = d.querySelector(".todo-title");
 
-     const activeBtn = document.querySelectorAll("button.active");
-     const completedBtn = document.querySelectorAll("button.completed");
+     const activeBtn = d.querySelectorAll("button.active");
+
      activeArray = [];
      completedArray = [];
 
@@ -192,30 +190,27 @@ function todoJSON(title) {
         order: order,
     }    
 
-    toDos[count-1] = objectJSON;
-    //console.log(count);
     localStorage.setItem(`${count-1}`, JSON.stringify(objectJSON));
-
     //console.log(localStorage);
 }
 
 // Buttons functionalities
 function addFunctionalityToDo() {
-    const numberTodos = document.querySelector(".item-number");
-    const activeCheckbox = document.querySelectorAll(".active");
-    const completedCheckbox = document.querySelectorAll(".completed");
-    const activeBtn = document.querySelector(".active-btn");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const todoItem = document.querySelectorAll(".todo-item");
-    const deleteBtn = document.querySelectorAll(".delete-btn_container");
+    const numberTodos = d.querySelector(".item-number");
+    const activeCheckbox = d.querySelectorAll(".active");
+    const completedCheckbox = d.querySelectorAll(".completed");
+    const activeBtn = d.querySelector(".active-btn");
+    const allBtn = d.querySelector(".all-btn");
+    const completedBtn = d.querySelector(".completed-btn");
+    const todoItem = d.querySelectorAll(".todo-item");
+    const deleteBtn = d.querySelectorAll(".delete-btn_container");
 
     completedCheckbox.forEach(checkbox =>  {
         checkbox.addEventListener("click", e => {
             if(e) {
+                console.log("click2");
                 let idCheckbox = e.target.getAttribute("data-id");
                 activeStatus(idCheckbox);
-                //console.log("click1");
                 return;
             }
         })
@@ -223,14 +218,12 @@ function addFunctionalityToDo() {
 
     activeCheckbox.forEach((checkbox, i) => {
         checkbox.addEventListener("click", e => {
-            //console.log(checkbox);
+            console.log("click1");
  
-                    e.preventDefault();                let idTodo = e.target.getAttribute("data-id");
+            let idTodo = e.target.getAttribute("data-id");
 
-                    //console.log(idTodo);
-
-                    updatedStatus(idTodo);
-                    return;
+            updatedStatus(idTodo);
+            return;
         })
     });
 
@@ -251,35 +244,8 @@ function addFunctionalityToDo() {
         }
     });
 
+
     todoItem.forEach(item => {
-        // DESKTOP
-        item.addEventListener("dragstart", e => {
-            dragStart(e);
-        });
-        item.addEventListener("dragover", e => {
-            drag(e);
-        });
-
-        item.addEventListener("drop", (e) => {
-            if(e) {
-                updateList(e.target);
-            }
-        });
-        
-        /*// MOBILE
-        item.addEventListener("touchstart", e => {
-            dragStart(e);
-        });
-        item.addEventListener("touchmove", e => {
-            drag(e);
-        });
-
-        item.addEventListener("touchend", (e) => {
-            if(e) {
-                updateList(e.target);
-            }
-        });*/
-
         item.addEventListener("mouseover", e => {
             if(e) {
                 let idItem = e.currentTarget.getAttribute("data-id");
@@ -292,52 +258,64 @@ function addFunctionalityToDo() {
             let idItem = e.currentTarget.getAttribute("data-id");
 
             hideDeleteIcon(idItem);
-        })
-    });
+        });
 
-    deleteBtn.forEach(btn => {
-        btn.querySelector("click", e => {
-            //console.log(e.target);
+        // DESKTOP
+        item.addEventListener("dragstart", e => {
+            item.classList.add("dragging");
+        });
 
-            let idItem = e.target.getAttribute("data-id");
+        item.addEventListener("dragend", (e) => {
+            item.classList.remove("dragging");
+        });
 
-            deleteItem();
-        }
-        )
-    });
+        item.addEventListener("dragover", e => {
+            e.preventDefault();
+
+            //console.log(e.clientY);
+
+            const afterElement = getDragAfterElement(e.clientY);
+            const draggingItem = d.querySelector(".dragging");
+
+            //console.log(afterElement);
+
+            if (!afterElement) {
+              todos.appendChild(draggingItem);
+            } else {
+              todos.insertBefore(draggingItem, afterElement);
+            }
+          });
+        });
 
     numberTodos.textContent = activeArray.length;
 }
 
-//Update list
-function updateList(element) { 
-    itemDragEnd = element.getAttribute("data-order");
-    let todoItem = document.querySelectorAll(".todo-item");
-    let orderCount = itemDragEnd-1;
-
-    console.log(element);
-
-    todoItem.forEach(item => {
-        if(item.getAttribute("data-order") === itemDragStart) {
-            element.before(item)
-        }
-        orderList()
-    })
-}
-
 // DRAG AND DROP
-function dragStart(e) {
-    itemDragStart = e.target.getAttribute("data-order");
-}
+function getDragAfterElement(y) {
+    const draggableElements = d.querySelectorAll(".todo-item:not(.dragging)");
+    let closestElement = null;
+    let closestOffset = Number.NEGATIVE_INFINITY;
 
-function drag(e) {
-        e.preventDefault();
-}
+    for (let i = 0; i < draggableElements.length; i++) {
+      const child = draggableElements[i];
+      const box = child.getBoundingClientRect();
+      //console.log(box);
+      const offset = y - (box.top + box.height / 2);
+  
+      if (offset < 0 && offset > closestOffset) {
+        closestOffset = offset;
+        closestElement = child;
+      }
+    }
+  
+    orderList();
+    return closestElement;
+  }
 
 // Drag and drop changes
 function orderList() {
-    let todoItem = document.querySelectorAll(".todo-item");
-    let order = itemDragEnd-1;
+    const todoItem = d.querySelectorAll(".todo-item");
+    let order = todoItem.length;
 
     let items = {...localStorage};
     let entries = Object.entries(items);
@@ -345,6 +323,7 @@ function orderList() {
 
     for(let i = 0; i < todoItem.length; i++) {
         let idItem = todoItem[i].getAttribute("data-id");
+        // console.log(idItem);
 
         if(todoItem[i] !== undefined) {
         todoItem[i].style.order = order;
@@ -361,21 +340,34 @@ function orderList() {
                 order: order,
             }    
         
-            toDos[count-1] = objectJSON;
-            //console.log(count);
             localStorage.setItem(`${valuesToDo.id}`, JSON.stringify(objectJSON));
                         }
                     }
                 })
-        order--;
-            }
-        }
-        console.log(localStorage);
+            order--;
+            };
+            const activeBtn = d.querySelectorAll("button.active");
+
+            activeArray = [];
+            completedArray = [];
+       
+           activeBtn.forEach(item => {
+               if(!item.classList.contains("hide")) {
+                   let contID = item.getAttribute("data-id");
+                   activeArray.push(contID);
+                   //console.log(activeArray);
+               } else {
+                   let contID = item.getAttribute("data-id");
+                   completedArray.push(contID);
+                   //console.log(completedArray);
+               }
+           });
 };
+}
 
 // Show delete icon
 function showDeleteIcon(idItem) {
-    const deleteBtn = document.querySelectorAll(".delete-btn_container");
+    const deleteBtn = d.querySelectorAll(".delete-btn_container");
 
     deleteBtn.forEach(btn => {
         if(btn.getAttribute("data-id") === idItem) {
@@ -392,7 +384,7 @@ function showDeleteIcon(idItem) {
 }
 // Hide delete icon
 function hideDeleteIcon(idItem) {
-    const deleteBtn = document.querySelectorAll(".delete-btn_container");
+    const deleteBtn = d.querySelectorAll(".delete-btn_container");
 
     deleteBtn.forEach(btn => {
         if(btn.getAttribute("data-id") === idItem) {
@@ -407,9 +399,8 @@ function deleteItem(idItem) {
     let items = {...localStorage};
     let entries = Object.entries(items);
     let valuesToDo;
-    const todoItem = document.querySelectorAll(".todo-item");
+    const todoItem = d.querySelectorAll(".todo-item");
 
-    //console.log(activeArray);
         todoItem.forEach(item => {
                 if(item.getAttribute("data-id") === idItem) {
                 todos.removeChild(item);                  
@@ -417,39 +408,42 @@ function deleteItem(idItem) {
             });
 
      entries.forEach((entry, i) => {
-        //if(entry[0] !== "theme") {
+        if(entry[0] !== "theme") {
         valuesToDo = JSON.parse(entry[1]);
 
-        //console.log(typeof entry[0]);
-        if(entry[0] === idItem) {            
-            completedArray = completedArray.filter(item => item !== entry[0]);
-            activeArray = activeArray.filter(item => item !== entry[0]);
+        if(valuesToDo.id === idItem) {
+            completedArray = completedArray.filter(item => item !== idItem);
+            activeArray = activeArray.filter(item => item !== idItem);
             
-            localStorage.removeItem(entry[0]);      
-        //}
+            localStorage.removeItem(entry[0]);
+            //console.log(localStorage);
+        }
+
         itemNumber.textContent = activeArray.length; 
-    }
-    });
+    };
+})
 }
 
 // Completed Status of To Do
 function updatedStatus(idTodo) {
      if(completedArray.includes(idTodo)) {
-        //console.log(completedArray);
+        console.log(completedArray);
         return;
     }
 
-    const todoItem = document.querySelectorAll(".todo-item");
-    const todoTitle = document.querySelectorAll(".todo-title");
-    const numberTodos = document.querySelector(".item-number");
-    const activeCheckbox = document.querySelectorAll(".circle-checkbox");
-    const completedCheckbox = document.querySelectorAll("button.completed");
+    console.log(idTodo);
+
+    const todoItem = d.querySelectorAll(".todo-item");
+    const todoTitle = d.querySelectorAll(".todo-title");
+    const numberTodos = d.querySelector(".item-number");
+    const activeCheckbox = d.querySelectorAll(".circle-checkbox");
+    const completedCheckbox = d.querySelectorAll("button.completed");
     let idCont; 
 
     todoItem.forEach((item, index) => {
         if(item.getAttribute("data-id") === idTodo) {
             idCont = Number(index);
-            //console.log(idCont);
+            console.log(idCont);
         } else {
             return;
         }
@@ -462,10 +456,8 @@ function updatedStatus(idTodo) {
     completedArray.push(String(idTodo));
     activeArray = activeArray.filter(item => item !== String(idTodo));
 
-
-    //onsole.log(completedArray);
+    //console.log(completedArray);
     //console.log(activeArray);
-
 
     // Update JSON
     let items = {...localStorage};
@@ -488,7 +480,7 @@ function updatedStatus(idTodo) {
             const objectJSON = {
                 title: valuesToDo.title,
                 status: "completed",
-                id: String(index),
+                id: valuesToDo.id,
                 order: valuesToDo.order,
             }    
         
@@ -498,6 +490,7 @@ function updatedStatus(idTodo) {
            }
            }
         })
+
         //console.log(localStorage);
         numberTodos.textContent = activeArray.length;
         
@@ -517,12 +510,13 @@ function activeStatus(idCheckbox) {
         //console.log(activeArray);
             return;
     }
+    console.log(idCheckbox);
 
-    const todoItem = document.querySelectorAll(".todo-item");
-    const todoTitle = document.querySelectorAll(".todo-title.completed");
-    const numberTodos = document.querySelector(".item-number");
-    const circleCheckbox = document.querySelectorAll(".circle-checkbox");
-    const completedCheckbox = document.querySelectorAll("button.completed");
+    const todoItem = d.querySelectorAll(".todo-item");
+    const todoTitle = d.querySelectorAll(".todo-title.completed");
+    const numberTodos = d.querySelector(".item-number");
+    const circleCheckbox = d.querySelectorAll(".circle-checkbox");
+    const completedCheckbox = d.querySelectorAll("button.completed");
     let idCont; 
 
     todoItem.forEach((item, index) => {
@@ -544,11 +538,8 @@ function activeStatus(idCheckbox) {
 
     completedArray = completedArray.filter(item => item !== String(idCheckbox));    
 
-    if(activeArray.includes(idCheckbox)) {
-        return;
-    } else {
-        activeArray.push(String(idCheckbox));
-    }  
+    activeArray.push(String(idCheckbox));
+    console.log(activeArray);
 
         // Update JSON
         let items = {...localStorage};
@@ -571,7 +562,7 @@ function activeStatus(idCheckbox) {
                 const objectJSON = {
                     title: valuesToDo.title,
                     status: "active",
-                    id:  String(index),
+                    id: valuesToDo.id,
                     order: valuesToDo.order,
                 }    
             
@@ -581,7 +572,7 @@ function activeStatus(idCheckbox) {
                }
             }
             })
-            //console.log(localStorage);    
+            console.log(localStorage);    
             numberTodos.textContent = activeArray.length; 
 
             if(activeFilter === true) {
@@ -600,10 +591,10 @@ function filterActive() {
     activeFilter = true;
     completedFilter = false;
 
-    const todoItems = document.querySelectorAll(".todo-item");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const activeBtn = document.querySelector(".active-btn");
+    const todoItems = d.querySelectorAll(".todo-item");
+    const allBtn = d.querySelector(".all-btn");
+    const completedBtn = d.querySelector(".completed-btn");
+    const activeBtn = d.querySelector(".active-btn");
     
     todoItems.forEach(item => {
         //console.log(completedArray);
@@ -626,10 +617,10 @@ function filterCompleted() {
     activeFilter = false;
     completedFilter = true;
 
-    const todoItems = document.querySelectorAll(".todo-item");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const activeBtn = document.querySelector(".active-btn");
+    const todoItems = d.querySelectorAll(".todo-item");
+    const allBtn = d.querySelector(".all-btn");
+    const completedBtn = d.querySelector(".completed-btn");
+    const activeBtn = d.querySelector(".active-btn");
     
     todoItems.forEach(item => {
         //console.log(completedArray);
@@ -652,10 +643,10 @@ function showAll() {
     activeFilter = false;
     completedFilter = false;
 
-    const todoItems = document.querySelectorAll(".todo-item");
-    const allBtn = document.querySelector(".all-btn");
-    const completedBtn = document.querySelector(".completed-btn");
-    const activeBtn = document.querySelector(".active-btn");
+    const todoItems = d.querySelectorAll(".todo-item");
+    const allBtn = d.querySelector(".all-btn");
+    const completedBtn = d.querySelector(".completed-btn");
+    const activeBtn = d.querySelector(".active-btn");
     
     for(let i = 0; i < todoItems.length; i++) {
      todoItems[i].classList.remove("hide");   
@@ -694,7 +685,7 @@ async function getTodos() {
             activeToDos.push[i];
             }
 
-        const todoItem = document.createElement("div");
+        const todoItem = d.createElement("div");
         todoItem.classList.add("theme");
         //todoItem.setAttribute("id", `todo-${valuesToDo.id}`);
         todoItem.setAttribute("data-id", valuesToDo.id);
@@ -703,15 +694,15 @@ async function getTodos() {
         // ToDo Info
         todoItem.classList.add("todo-item");
         todoItem.setAttribute("draggable", true);
-        const todoInfo = document.createElement("div");
+        const todoInfo = d.createElement("div");
         todoInfo.classList.add("todo-info");
         todoInfo.classList.add("theme");
-        const circleCheckbox = document.createElement("button");
+        const circleCheckbox = d.createElement("button");
         circleCheckbox.classList.add("circle-checkbox");
         circleCheckbox.setAttribute("data-id", valuesToDo.id);
         circleCheckbox.classList.add("active");
         circleCheckbox.classList.add("theme");
-        const completedCheckbox = document.createElement("button");
+        const completedCheckbox = d.createElement("button");
         completedCheckbox.classList.add("completed");
         completedCheckbox.setAttribute("data-id", valuesToDo.id);
 
@@ -727,7 +718,7 @@ async function getTodos() {
         //console.log(activeArray);
         //console.log(completedArray);
 
-        const todoTitle = document.createElement("p");
+        const todoTitle = d.createElement("p");
         todoTitle.classList.add("todo-title");
         todoTitle.classList.add(valuesToDo.status);
         todoTitle.textContent = valuesToDo.title;
@@ -735,11 +726,11 @@ async function getTodos() {
         todoTitle.setAttribute("data-order", valuesToDo.order);
         todoTitle.classList.add("theme");
 
-        const deleteBtn = document.createElement("button");
+        const deleteBtn = d.createElement("button");
         deleteBtn.classList.add("delete-btn_container");
         deleteBtn.classList.add("hide");
         deleteBtn.setAttribute("data-id", valuesToDo.id);
-        const crossIcon = document.createElement("img");
+        const crossIcon = d.createElement("img");
         crossIcon.classList.add("delete-btn");
         crossIcon.setAttribute("src", "./images/icon-cross.svg");
         todoItem.classList.add("light");
@@ -759,10 +750,6 @@ async function getTodos() {
     
         todos.prepend(todoItem);
 
-        //console.log(activeArray);
-        //console.log(completedArray);
-        
-        //console.log(localStorage);
         addFunctionalityToDo();
         addOrder();
         } 
@@ -770,7 +757,7 @@ async function getTodos() {
             theme = entry[1];
             console.log(theme);
             
-            const body = document.querySelector("body");
+            const body = d.querySelector("body");
             body.classList.add(`${theme}`);
             addTheme();
         }
@@ -779,7 +766,7 @@ async function getTodos() {
 
 // Theme 
 function addTheme() {
-    const themeItems = document.querySelectorAll(".theme");
+    const themeItems = d.querySelectorAll(".theme");
     if(theme === "light"){
         themeItems.forEach((item, i) => {
         themeItems[i].classList.add("light");
@@ -801,7 +788,7 @@ function addTheme() {
 
 // Add Order 
 function addOrder() {
-    const todoItem = document.querySelectorAll(".todo-item");
+    const todoItem = d.querySelectorAll(".todo-item");
     
     todoItem.forEach((item, i) => {
         let orderNum = item.getAttribute("data-order");
@@ -816,7 +803,7 @@ deleteAllBtn.addEventListener("click", e => {
     let items = {...localStorage};
     let entries = Object.entries(items);
     let valuesToDo;
-    const todoItem = document.querySelectorAll(".todo-item");
+    const todoItem = d.querySelectorAll(".todo-item");
 
     //console.log(activeArray);
     if(e) {
